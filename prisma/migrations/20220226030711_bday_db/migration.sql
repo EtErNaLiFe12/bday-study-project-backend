@@ -1,0 +1,26 @@
+-- CreateTable
+CREATE TABLE `User` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `username` VARCHAR(30) NOT NULL,
+    `email` VARCHAR(256) NOT NULL,
+    `password` VARCHAR(20) NOT NULL,
+    `reg_dt` DATETIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+
+    UNIQUE INDEX `User_email_key`(`email`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Post` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(256) NOT NULL,
+    `content` VARCHAR(256) NOT NULL,
+    `postId` BIGINT NULL,
+    `crt_dt` DATETIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+    `mod_dt` DATETIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `Post` ADD CONSTRAINT `Post_postId_fkey` FOREIGN KEY (`postId`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

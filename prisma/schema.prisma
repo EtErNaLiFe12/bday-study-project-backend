@@ -1,0 +1,32 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mysql"
+  url = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// 1:N의 관계로 유저가 생성하는 포스트들이 다수이므로 post 테이블에서 FK로 id와 username을 컨넥트 하였음 
+model User {
+  id        BigInt @id @default(autoincrement())
+  username  String @db.VarChar(30)
+  email     String @unique @db.VarChar(256)
+  password  String @db.VarChar(20)
+  posts     Post[]
+  reg_dt    DateTime @default(now()) @db.DateTime(0)
+}
+
+model Post {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(256)
+  content     String   @db.VarChar(256)
+  post_user   User?    @relation(fields: [postId], references: [id])
+  postId      BigInt?
+  crt_dt      DateTime @default(now()) @db.DateTime(0)
+  mod_dt      DateTime @default(now()) @db.DateTime(0)
+}

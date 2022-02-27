@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { comparePasswords } from 'src/utils/bcrypt';
 import { PrismaService } from './../prisma/prisma.service'
 import { Auth } from './entity/auth.entity';
 
@@ -15,15 +16,16 @@ export class AuthService {
       throw new NotFoundException(`No user found for email: ${email}`);
     }
 
-    const passwordValid = user.password === password;
+    // Logic for compare password between password in Database and password from request
+    const passwordValid = comparePasswords(password, user.password);
 
-    if(!passwordValid) {
+    if(passwordValid) {
+      console.log('User Validation Success!')
+      return {
+        accessToken: this.jwtService.sign({ userId: user.id })
+      }
+    } else {
       throw new UnauthorizedException('Invalid password');
-    }
-    
-    return {
-      accessToken: this.jwtService.sign({ userId: user.id.toString() }),
-      userId: user.id.toString(),
     }
   }
   validateUser(userId: string) {

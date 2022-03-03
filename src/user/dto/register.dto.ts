@@ -18,12 +18,33 @@ export class RegisterDto {
   readonly password: string;
 }
 
+// export class UserResponseDto {
+//   @ApiProperty()
+//   @IsString()
+//   @IsNotEmpty()
+//   readonly id: string;
+
+//   @ApiProperty({ description: '유저 이름'})
+//   @IsString()
+//   @IsNotEmpty()
+//   readonly username: string;
+
+//   @ApiProperty({ description: '이메일 주소'})
+//   @IsEmail()
+//   @IsNotEmpty()
+//   readonly email: string;
+
+//   @ApiProperty({ description: '가입 일자'})
+//   @IsDate()
+//   @IsNotEmpty()
+//   readonly reg_dt: Date;
+// }
 export class UserDto {
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  readonly id: bigint;
+  readonly id: string;
 
   @ApiProperty({ description: '유저 이름'})
   @IsString()
@@ -45,6 +66,6 @@ export class UserDto {
   readonly reg_dt: Date;
 
   constructor(userData) {
-    this.id = userData.ID.toString();
+    this.id = userData.id.toString();
   }
 }

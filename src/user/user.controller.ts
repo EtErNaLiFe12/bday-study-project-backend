@@ -18,11 +18,10 @@ export class UserController {
 
   //  Param decorator로 get에 선언한 id를 가져온 후 id에 넣음 return 으로는 userdto를 가져옴
    @Get('/:id')
-  //  @UseGuards(JwtAuthGuard)
+   @UseGuards(JwtAuthGuard)
    @ApiOperation({ summary: '유저 한명의 정보 조회', description: '한명의 유저 정보 가져오기'})
    async getUser(@Param('id') id: number): Promise<UserDto> {
       const result = await this.userService.getUser(id)
-      console.log('result is', result);
       return result;
    }
 

@@ -8,7 +8,7 @@ import { AuthDto } from './dto/auth.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('login')
+  @Post('/login')
   @ApiOperation({ summary: '로그인 API', description: '로그인 실행' })
     async login(@Body() { email, password }: AuthDto ) { 
       return this.authService.login(email, password);

@@ -3,24 +3,39 @@ import { User } from "@prisma/client";
 import { PrismaService } from "src/prisma/prisma.service";
 import { encodePassword } from "src/utils/bcrypt";
 import { RegisterDto } from "./dto/register.dto";
-import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   // All users
-  async getAllUsers(): Promise<User[]> {
-    return await this.prisma.user.findMany();
+  async getAllUsers() : Promise<any> {
+    const res = await this.prisma.user.findMany({
+      select: 
+        {
+          id : true,
+          username: true,
+          email: true,
+          reg_dt: true,
+        }
+    });
+    return res;
   }
   
   // single user
-  async getUser(id: number): Promise<User> {
-    return await this.prisma.user.findFirst({
+  async getUser(id: number): Promise<any> {
+    return await this.prisma.user.findUnique({
       where: {
-        id : BigInt(id),
+        id : Number(id)
+      },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        reg_dt: true,
       }
     });
   }
+
 
   // Register
   async regUser(data: RegisterDto) : Promise<User> {

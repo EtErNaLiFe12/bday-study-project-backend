@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Post as ModelPost} from '@prisma/client';
+import { Post as PostModel} from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { UserResponseDto } from 'src/user/dto/register.dto';
 import { PostDto, PostResponseDto } from './dto/post.dto';
 import { PostService } from './post.service';
 
@@ -20,18 +21,11 @@ export class PostController {
   // get a single user's all posts
   @UseGuards(JwtAuthGuard)
   @Get('/posts/:id')
-  @ApiOperation({ summary: '한개의 Post 조회', description: '한개의 모든 Post 가져오기'})
-  async getUserPostById(@Param('id') id: number): Promise<ModelPost> {
+  @ApiOperation({ summary: '한개의 모든 Post 조회', description: '한개의 모든 Post 가져오기'})
+  async getUserPostById(@Param('id') id: number): Promise<UserResponseDto> {
     const result = await this.postService.getUserPosts(id);
     return result;
   }
-
-  //  @Get('/:id')
-  //  @ApiOperation({ summary: '한개의 Post 조회', description: '한개의 모든 Post 가져오기'})
-  //  async getPost(@Param('id') id: number): Promise<ModelPost> {
-  //   const result = await this.postService.getPost(id)
-  //   return result;
-  //  }
 
   // Create
   @Post('/create')
@@ -47,7 +41,7 @@ export class PostController {
   @Delete('/:id')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Post 삭제', description: 'post 삭제 하기'})
-  async deletePost(@Param('id') id: number): Promise<ModelPost> {
+  async deletePost(@Param('id') id: number): Promise<PostModel> {
     const result = await this.postService.deletePost(id)
     return result;
   }

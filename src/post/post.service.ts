@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import { Post } from "@prisma/client";
+import { Post as PostModel } from "@prisma/client";
 import { PrismaService } from "src/prisma/prisma.service";
+import { UserResponseDto } from "src/user/dto/register.dto";
 import { PostDto, PostUpdateDto } from "./dto/post.dto";
 
 @Injectable()
@@ -8,13 +9,13 @@ export class PostService {
   constructor(private readonly prisma: PrismaService) {}
 
   // get all posts
-  async getAllPosts(): Promise<Post[]> {
+  async getAllPosts(): Promise<PostModel[]> {
     return await this.prisma.post.findMany();
   }
   
   // single user's all posts
-  async getUserPosts(id: number) : Promise<any> {
-    return await this.prisma.user.findFirst({
+  async getUserPosts(id: number) : Promise<UserResponseDto> {
+    return await this.prisma.user.findUnique({
       where: { id: Number(id) },
       include: {
         posts: true,
@@ -22,17 +23,8 @@ export class PostService {
     })
   }
 
-  // // get single post
-  // async getPost(id: number): Promise<Post> {
-  //   return await this.prisma.post.findUnique({
-  //     where: {
-  //       id : Number(id),
-  //     }
-  //   });
-  // };
-
   // create
-  async createPost(data: PostDto) : Promise<Post> {
+  async createPost(data: PostDto) : Promise<PostModel> {
     const res = await this.prisma.post.create({
     data: 
       {
@@ -49,7 +41,7 @@ export class PostService {
   }
   
   // Delete
-  async deletePost(id: number): Promise<Post> {
+  async deletePost(id: number): Promise<PostModel> {
     return await this.prisma.post.delete({
       where: {
         id : Number(id)
@@ -58,7 +50,7 @@ export class PostService {
   }
 
   // update 
-  async updateStNote(id: number, data: PostUpdateDto): Promise<Post> {
+  async updateStNote(id: number, data: PostUpdateDto): Promise<PostModel> {
     const res = await this.prisma.post.update({
       where: {
         id: Number(id)

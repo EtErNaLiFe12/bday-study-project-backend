@@ -22,7 +22,7 @@ export class PostController {
   @UseGuards(JwtAuthGuard)
   @Get('/posts/:id')
   @ApiOperation({ summary: '한개의 모든 Post 조회', description: '한개의 모든 Post 가져오기'})
-  async getUserPostById(@Param('id') id: number): Promise<UserResponseDto> {
+  async getUserPosts(@Param('id') id: number): Promise<UserResponseDto> {
     const result = await this.postService.getUserPosts(id);
     return result;
   }

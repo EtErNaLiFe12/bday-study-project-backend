@@ -13,9 +13,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  // payload에 userId가 존재 시 클라이언트 측 요청 req에 담긴 토큰이 유효한 토큰
-  // 이라는 것이기 때문에 로그인이 됨
-
+  // payload에 userId가 존재 시 클라이언트 측 요청 req에 담긴 토큰이 유효한 토큰임.
   async validate(payload: { userId: string }) {
     const user = await this.authService.validateUser(payload.userId);
     // user가 없을 경우

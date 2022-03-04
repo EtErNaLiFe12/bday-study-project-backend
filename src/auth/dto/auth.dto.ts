@@ -19,5 +19,5 @@ export class AuthResponseDto {
 
   @ApiProperty()
   @IsString()
-  userId: bigint;
+  userId: string;
 }
